@@ -1,4 +1,4 @@
-package sample;
+package turingmachine;
 
 public class Rule {
     private int stateIndex;

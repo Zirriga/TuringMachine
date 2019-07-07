@@ -1,4 +1,4 @@
-package sample;
+package turingmachine;
 
 
 import java.util.List;
@@ -6,18 +6,18 @@ import java.util.List;
 public class States {
     private int numOfStates;
     private List<Rule> rules;
-    private int currstate;
+    private int currState;
 
     public States() {
         this.numOfStates = 0;
         this.rules = null;
-        this.currstate = 0;
+        this.currState = 0;
     }
 
     public States(int numOfStates, List<Rule> rules) {
         this.numOfStates = numOfStates;
         this.rules = rules;
-        this.currstate = 0;
+        this.currState = 0;
     }
 
     public int getNumOfStates() {
@@ -42,7 +42,6 @@ public class States {
                 int absoluteIndex = currentInputIndex;
                 switch (rule.getActionLRN()) {
                     case "Left":
-
                         if(rule.getActionRW() == "Null") {
                             setCurrState(rule.getNextStateIndex());
                             absoluteIndex--;
@@ -79,15 +78,15 @@ public class States {
                 }
             }
         }
-        setCurrState(1000);
+        //setCurrState(1000);
         return currentInputIndex;
     }
 
     public void setCurrState(int nextState) {
-        this.currstate = nextState;
+        this.currState = nextState;
     }
 
-    public int getCurrstate() {
-        return this.currstate;
+    public int getCurrState() {
+        return currState;
     }
 }
