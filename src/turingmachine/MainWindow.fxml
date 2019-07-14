@@ -9,11 +9,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="turingmachine.MainWindowController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="turingmachine.MainWindowController">
    <children>
       <VBox prefHeight="500.0" prefWidth="600.0">
          <children>
@@ -29,26 +29,33 @@
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="memoryTapeTable1View" maxWidth="-Infinity" prefHeight="50.0" prefWidth="550.0">
-                    <columns>
-                      <TableColumn fx:id="t1C0TableColumn" minWidth="5.0" prefWidth="50.0" resizable="false" text="C0" />
-                      <TableColumn fx:id="t1C1TableColumn" prefWidth="50.0" text="C1" />
-                        <TableColumn fx:id="t1C2TableColumn" prefWidth="50.0" text="C2" />
-                        <TableColumn fx:id="t1C3TableColumn" prefWidth="50.0" text="C3" />
-                        <TableColumn fx:id="t1C4TableColumn" prefWidth="50.0" text="C4" />
-                        <TableColumn fx:id="t1C5TableColumn" prefWidth="50.0" text="C5" />
-                        <TableColumn fx:id="t1C6TableColumn" prefWidth="50.0" text="C6" />
-                        <TableColumn fx:id="t1C7TableColumn" prefWidth="50.0" text="C7" />
-                        <TableColumn fx:id="t1C8TableColumn" prefWidth="50.0" text="C8" />
-                        <TableColumn fx:id="t1C9TableColumn" prefWidth="50.0" text="C9" />
-                        <TableColumn fx:id="t1C10TableColumn" prefWidth="50.0" text="C10" />
-                    </columns>
-                  </TableView>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="memoryTapeTable1View" maxWidth="-Infinity" onMouseEntered="#onUpdateTapeValues" onMouseExited="#onUpdateTapeValues" onMousePressed="#onUpdateTapeValues" onMouseReleased="#onUpdateTapeValues" prefHeight="50.0" prefWidth="550.0">
+                          <columns>
+                            <TableColumn fx:id="t1C0TableColumn" minWidth="5.0" prefWidth="50.0" resizable="false" text="C0" />
+                            <TableColumn fx:id="t1C1TableColumn" prefWidth="50.0" text="C1" />
+                              <TableColumn fx:id="t1C2TableColumn" prefWidth="50.0" text="C2" />
+                              <TableColumn fx:id="t1C3TableColumn" prefWidth="50.0" text="C3" />
+                              <TableColumn fx:id="t1C4TableColumn" prefWidth="50.0" text="C4" />
+                              <TableColumn fx:id="t1C5TableColumn" prefWidth="50.0" text="C5" />
+                              <TableColumn fx:id="t1C6TableColumn" prefWidth="50.0" text="C6" />
+                              <TableColumn fx:id="t1C7TableColumn" prefWidth="50.0" text="C7" />
+                              <TableColumn fx:id="t1C8TableColumn" prefWidth="50.0" text="C8" />
+                              <TableColumn fx:id="t1C9TableColumn" prefWidth="50.0" text="C9" />
+                              <TableColumn fx:id="t1C10TableColumn" prefWidth="49.0" text="C10" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </StackPane>
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="moveLeftTapeButton" mnemonicParsing="false" text="&lt;" />
+                  <Button fx:id="moveLeftTapeButton" mnemonicParsing="false" onMouseClicked="#onMoveLeftTapeButtonClicked" text="&lt;" />
                   <Label text="Move tape">
                      <font>
                         <Font size="13.0" />
@@ -57,7 +64,11 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="moveRightTapeButton" mnemonicParsing="false" text="&gt;" />
+                  <Button fx:id="moveRightTapeButton" mnemonicParsing="false" onMouseClicked="#onMoveRightTapeButtonClicked" text="&gt;" />
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <Button fx:id="set1Button" mnemonicParsing="false" onMouseClicked="#set1ButtonClicked" text="Set 1" />
+                  <Separator layoutX="330.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
+                  <Button fx:id="set0Button" layoutX="355.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#set0ButtonClicked" text="Set 0" />
                </children>
                <opaqueInsets>
                   <Insets bottom="10.0" />
@@ -73,7 +84,7 @@
                               <Font size="17.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="rulesTable2View" prefHeight="250.0" prefWidth="290.0">
+                        <TableView fx:id="rulesTable2View" editable="true" prefHeight="250.0" prefWidth="290.0">
                           <columns>
                             <TableColumn fx:id="t2StateTableColumn" prefWidth="40.0" resizable="false" text="State" />
                             <TableColumn fx:id="t2ReadTableColumn" prefWidth="39.0" resizable="false" text="Read" />
@@ -96,17 +107,82 @@
                            <children>
                               <Label prefHeight="17.0" prefWidth="83.0" text="Current State" />
                               <TextField fx:id="currentStateTextField" />
-                              <Button fx:id="setCurrentStateButton" mnemonicParsing="false" text="Set" />
+                              <Button fx:id="setCurrentStateButton" mnemonicParsing="false" onMouseClicked="#setCurrentStateButtonClicked" text="Set" />
                            </children>
                         </HBox>
                         <HBox layoutX="20.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="83.0" text="Head Position" />
                               <TextField fx:id="headPositionTextField" />
-                              <Button fx:id="setHeadPositionButton" mnemonicParsing="false" text="Set" />
+                              <Button fx:id="setHeadPositionButton" mnemonicParsing="false" onMouseClicked="#setHeadPositionButtonClicked" text="Set" />
                            </children>
                         </HBox>
-                        <Separator prefHeight="100.0" prefWidth="200.0" />
+                        <Separator prefHeight="20.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Separator>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="New Rule">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <HBox prefHeight="47.0" prefWidth="264.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="39.0" text="State" />
+                                    <TextField fx:id="stateTextField" prefHeight="25.0" prefWidth="27.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="36.0" prefHeight="52.0" prefWidth="264.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="98.0" text="Read &quot;1&quot;:  Write" underline="true" />
+                                    <TextField fx:id="write1TextField" prefHeight="25.0" prefWidth="22.0">
+                                       <HBox.margin>
+                                          <Insets right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label text="Move" />
+                                    <TextField fx:id="move1TextField" prefHeight="25.0" prefWidth="25.0">
+                                       <HBox.margin>
+                                          <Insets left="2.0" right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label text="Next State" />
+                                    <TextField fx:id="nextState1TextField" prefHeight="25.0" prefWidth="22.0">
+                                       <HBox.margin>
+                                          <Insets left="2.0" right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="68.0" prefHeight="146.0" prefWidth="264.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="98.0" text="Read &quot;0&quot;:  Write" underline="true" />
+                                    <TextField fx:id="write0TextField" prefHeight="25.0" prefWidth="22.0">
+                                       <HBox.margin>
+                                          <Insets right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label text="Move" />
+                                    <TextField fx:id="move0TextField" prefHeight="25.0" prefWidth="25.0">
+                                       <HBox.margin>
+                                          <Insets left="2.0" right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label text="Next State" />
+                                    <TextField fx:id="nextState0TextField" prefHeight="25.0" prefWidth="22.0">
+                                       <HBox.margin>
+                                          <Insets left="2.0" right="2.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="addRuleButton" mnemonicParsing="false" onMouseClicked="#addRuleButtonClicked" text="Add Rule" />
+                           </children>
+                        </VBox>
+                        <Separator prefHeight="20.0" prefWidth="200.0" />
                         <HBox layoutX="20.0" layoutY="40.0" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="83.0" text="ERROR:" />
@@ -119,13 +195,11 @@
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="saveRulesButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Save Rules" />
+                  <Button fx:id="deleteRuleButton" mnemonicParsing="false" onMouseClicked="#deleteRuleButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Delete Rule" />
                   <Separator orientation="VERTICAL" prefHeight="10.0" prefWidth="5.0" />
-                  <Button fx:id="SaveMemoryButton" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Save Memory" />
+                  <Button fx:id="executeStepButton" layoutX="126.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#executeStepButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Execute Step" />
                   <Separator orientation="VERTICAL" prefHeight="10.0" prefWidth="5.0" />
-                  <Button fx:id="executeStepButton" layoutX="126.0" layoutY="15.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Execute Step" />
-                  <Separator orientation="VERTICAL" prefHeight="10.0" prefWidth="5.0" />
-                  <Button fx:id="runButton" layoutX="226.0" layoutY="15.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Run" />
+                  <Button fx:id="runButton" layoutX="226.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#runButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Run" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />

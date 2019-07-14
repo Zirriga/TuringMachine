@@ -2,83 +2,84 @@ package turingmachine;
 
 
 import java.util.List;
+import java.util.Map;
 
 public class States {
-    private int numOfStates;
+
     private List<Rule> rules;
     private int currState;
+    private Map<Integer, String> memoryTape;
 
     public States() {
-        this.numOfStates = 0;
         this.rules = null;
         this.currState = 0;
+        this.memoryTape = null;
     }
 
-    public States(int numOfStates, List<Rule> rules) {
-        this.numOfStates = numOfStates;
+    public States(List<Rule> rules, int initialState, Map<Integer, String> input) {
         this.rules = rules;
-        this.currState = 0;
-    }
-
-    public int getNumOfStates() {
-        return numOfStates;
+        this.currState = initialState;
+        this.memoryTape = input;
     }
 
     public List<Rule> getRules() {
         return rules;
     }
 
-    public void setNumOfStates(int numOfStates) {
-        this.numOfStates = numOfStates;
-    }
-
     public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
 
-    public int executeState(int stateIndex, int currentInputIndex, List<Integer> input) {
+    public Map<Integer, String> getMemoryTape() {
+        return memoryTape;
+    }
+
+    public void setMemoryTape(Map<Integer, String> input) {
+        this.memoryTape = input;
+    }
+
+    public int executeState(int stateIndex, int currentInputIndex) {
         for (Rule rule: this.rules) {
-            if(rule.getStateIndex() == stateIndex && rule.getInputValue() == input.get(currentInputIndex)){
+            if(rule.getStateIndex() == stateIndex && rule.getInputValue() == Integer.parseInt(memoryTape.get(currentInputIndex))){
                 int absoluteIndex = currentInputIndex;
                 switch (rule.getActionLRN()) {
-                    case "Left":
-                        if(rule.getActionRW() == "Null") {
+                    case "L":
+                        if(rule.getActionRW().equals("")) {
                             setCurrState(rule.getNextStateIndex());
                             absoluteIndex--;
                             return absoluteIndex;
                         }
                         else {
-                            input.set(absoluteIndex, Integer.parseInt(rule.getActionRW()));
+                            memoryTape.put(absoluteIndex, rule.getActionRW());
                             setCurrState(rule.getNextStateIndex());
                             absoluteIndex--;
                             return absoluteIndex;
                         }
-                    case "Right":
-                        if(rule.getActionRW() == "Null") {
+                    case "R":
+                        if(rule.getActionRW().equals("")) {
                             setCurrState(rule.getNextStateIndex());
                             absoluteIndex++;
                             return absoluteIndex;
                         }
                         else {
-                            input.set(absoluteIndex, Integer.parseInt(rule.getActionRW()));
+                            memoryTape.put(absoluteIndex, rule.getActionRW());
                             setCurrState(rule.getNextStateIndex());
                             absoluteIndex++;
                             return absoluteIndex;
                         }
-                    case "Null":
-                        if(rule.getActionRW() == "Null") {
+                    case "N":
+                        if(rule.getActionRW().equals("")) {
                             setCurrState(rule.getNextStateIndex());
                             return absoluteIndex;
                         }
                         else {
-                            input.set(absoluteIndex, Integer.parseInt(rule.getActionRW()));
+                            memoryTape.put(absoluteIndex, rule.getActionRW());
                             setCurrState(rule.getNextStateIndex());
                             return absoluteIndex;
                         }
                 }
             }
         }
-        //setCurrState(1000);
         return currentInputIndex;
     }
 
