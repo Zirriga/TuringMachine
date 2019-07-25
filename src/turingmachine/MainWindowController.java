@@ -9,10 +9,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MainWindowController {
@@ -31,39 +30,67 @@ public class MainWindowController {
     */
 
     private ObservableList<MemoryBuffer> memoryTapeObservableList = FXCollections.observableArrayList();
-    @FXML private TableView<MemoryBuffer> memoryTapeTable1View;
-    @FXML private TableColumn<MemoryBuffer, String> t1C0TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C1TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C2TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C3TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C4TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C5TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C6TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C7TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C8TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C9TableColumn;
-    @FXML private TableColumn<MemoryBuffer, String> t1C10TableColumn;
+    @FXML
+    private TableView<MemoryBuffer> memoryTapeTable1View;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C0TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C1TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C2TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C3TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C4TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C5TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C6TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C7TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C8TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C9TableColumn;
+    @FXML
+    private TableColumn<MemoryBuffer, String> t1C10TableColumn;
 
     private ObservableList<Rule> rulesObservableList = FXCollections.observableArrayList();
-    @FXML private TableView<Rule> rulesTable2View;
-    @FXML private TableColumn<Rule, String> t2StateTableColumn;
-    @FXML private TableColumn<Rule, String> t2ReadTableColumn;
-    @FXML private TableColumn<Rule, String> t2WriteTableColumn;
-    @FXML private TableColumn<Rule, String> t2MoveTableColumn;
-    @FXML private TableColumn<Rule, String> t2NextStateTableColumn;
+    @FXML
+    private TableView<Rule> rulesTable2View;
+    @FXML
+    private TableColumn<Rule, String> t2StateTableColumn;
+    @FXML
+    private TableColumn<Rule, String> t2ReadTableColumn;
+    @FXML
+    private TableColumn<Rule, String> t2WriteTableColumn;
+    @FXML
+    private TableColumn<Rule, String> t2MoveTableColumn;
+    @FXML
+    private TableColumn<Rule, String> t2NextStateTableColumn;
 
-    @FXML private TextField stateTextField;
-    @FXML private TextField write1TextField;
-    @FXML private TextField move1TextField;
-    @FXML private TextField nextState1TextField;
-    @FXML private TextField write0TextField;
-    @FXML private TextField move0TextField;
-    @FXML private TextField nextState0TextField;
+    @FXML
+    private TextField stateTextField;
+    @FXML
+    private TextField writeVal;
+    @FXML
+    private TextField moveHere;
+    @FXML
+    private TextField nextState;
+    @FXML
+    private TextField valueSet;
+    @FXML
+    private TextField abc;
+    @FXML
+    private TextField readVal;
 
-    @FXML private TextField errorLabel;
+    @FXML
+    private TextField errorLabel;
 
-    @FXML private TextField currentStateTextField;
-    @FXML private TextField headPositionTextField;
+    @FXML
+    private TextField currentStateTextField;
+    @FXML
+    private TextField headPositionTextField;
 
 
     public MainWindowController() {
@@ -130,10 +157,13 @@ public class MainWindowController {
         t1C9TableColumn.setText(String.valueOf(Integer.parseInt(t1C9TableColumn.getText()) + 1));
         t1C10TableColumn.setText(String.valueOf(Integer.parseInt(t1C10TableColumn.getText()) + 1));
 
-        headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())+1));
+        currentAbsIndex = Integer.parseInt(t1C5TableColumn.getText());
+
+        headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) + 1));
 
         onUpdateTapeValues();
     }
+
     @FXML
     public void onMoveLeftTapeButtonClicked() {
         t1C0TableColumn.setText(String.valueOf(Integer.parseInt(t1C0TableColumn.getText()) - 1));
@@ -148,21 +178,23 @@ public class MainWindowController {
         t1C9TableColumn.setText(String.valueOf(Integer.parseInt(t1C9TableColumn.getText()) - 1));
         t1C10TableColumn.setText(String.valueOf(Integer.parseInt(t1C10TableColumn.getText()) - 1));
 
-        headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())-1));
+        currentAbsIndex = Integer.parseInt(t1C5TableColumn.getText());
+
+        headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) - 1));
 
         onUpdateTapeValues();
     }
 
     @FXML
-    private void onUpdateTapeValues(){
+    private void onUpdateTapeValues() {
         memoryTapeObservableList.removeAll(memoryTapeObservableList);
         List<String> tempValueContainer = new ArrayList<String>();
         int leftmostTapeIndex = Integer.parseInt(t1C0TableColumn.getText());
-        for(int i =0; i<11; i++) {
+        for (int i = 0; i < 11; i++) {
             if (memoryMap.containsKey(leftmostTapeIndex)) {
                 tempValueContainer.add(memoryMap.get(leftmostTapeIndex));
             } else {
-                tempValueContainer.add("");
+                tempValueContainer.add("0");
             }
             leftmostTapeIndex++;
         }
@@ -172,96 +204,103 @@ public class MainWindowController {
     }
 
     @FXML
-    public void set0ButtonClicked(){
-        int selectedIndex = (Integer.parseInt(t1C0TableColumn.getText()) + Integer.parseInt(t1C10TableColumn.getText()))/2;
+    public void setVoidButtonClicked() {
+        int selectedIndex = (Integer.parseInt(t1C0TableColumn.getText()) + Integer.parseInt(t1C10TableColumn.getText())) / 2;
         buffer.C5 = "0";
         memoryMap.put(selectedIndex, "0");
 
         onUpdateTapeValues();
     }
 
+    private boolean isHere(String alphabet, String val) {
+        List<String> valueList = Arrays.asList(alphabet.split(","));
+        return valueList.contains(val);
+    }
+
     @FXML
-    public void set1ButtonClicked(){
-        int selectedIndex = (Integer.parseInt(t1C0TableColumn.getText()) + Integer.parseInt(t1C10TableColumn.getText()))/2;
-        buffer.C5 = "1";
-        memoryMap.put(selectedIndex, "1");
+    public void setValueButtonClicked() {
+        int selectedIndex = (Integer.parseInt(t1C0TableColumn.getText()) + Integer.parseInt(t1C10TableColumn.getText())) / 2;
+        if (valueSet.getText().isEmpty()) {
+            errorLabel.setText("Empty value");
+            return;
+        } else {
+            if (!isHere(abc.getText(), valueSet.getText())) {
+                errorLabel.setText("Unexpected value");
+                return;
+            }
+            buffer.C5 = valueSet.getText();
+            memoryMap.put(selectedIndex, valueSet.getText());
+        }
 
         onUpdateTapeValues();
     }
 
     @FXML
-    public void addRuleButtonClicked(){
-        if(stateTextField.getText().isEmpty() || write1TextField.getText().isEmpty()
-                || move1TextField.getText().isEmpty() || nextState1TextField.getText().isEmpty()
-                || write0TextField.getText().isEmpty() || move0TextField.getText().isEmpty()
-                || nextState0TextField.getText().isEmpty()){
+    public void addRuleButtonClicked() {
+        if (stateTextField.getText().isEmpty() || writeVal.getText().isEmpty()
+                || moveHere.getText().isEmpty() || nextState.getText().isEmpty()) {
             errorLabel.setText("Fill Up All Fields!");
             return;
         }
-        if(!write1TextField.getText().equals("1") && !write1TextField.getText().equals("0") && !write1TextField.getText().equals("")) errorLabel.setText("You can only write 0, 1 or empty!");
-        if(!write0TextField.getText().equals("1") && !write0TextField.getText().equals("0") && !write0TextField.getText().equals("")) errorLabel.setText("You can only write 0, 1 or empty!");
-        if(!move0TextField.getText().equals("L") && !move0TextField.getText().equals("R") && !move0TextField.getText().equals("N")) errorLabel.setText("You can only move L, R or N!");
-        if(!move1TextField.getText().equals("L") && !move1TextField.getText().equals("R") && !move1TextField.getText().equals("N")) errorLabel.setText("You can only move L, R or N!");
-        else {
-            Rule newRule1 = new Rule(Integer.parseInt(stateTextField.getText()), 1, write1TextField.getText(), move1TextField.getText(), Integer.parseInt(nextState1TextField.getText()));
-            Rule newRule2 = new Rule(Integer.parseInt(stateTextField.getText()), 0, write0TextField.getText(), move0TextField.getText(), Integer.parseInt(nextState0TextField.getText()));
+        if ((isHere(abc.getText(), readVal.getText())) && (isHere(abc.getText(), writeVal.getText()))) {
+            if (!moveHere.getText().equals("L") && !moveHere.getText().equals("R") && !moveHere.getText().equals("N")) {
+                errorLabel.setText("You can only move L, R or N!");
+            } else {
+                Rule newRule1 = new Rule(Integer.parseInt(stateTextField.getText()), Integer.parseInt(readVal.getText()), writeVal.getText(), moveHere.getText(), Integer.parseInt(nextState.getText()));
 
-            rulesObservableList.add(newRule1);
-            rulesObservableList.add(newRule2);
+                rulesObservableList.add(newRule1);
 
-            rulesTable2View.setItems(rulesObservableList);
+                rulesTable2View.setItems(rulesObservableList);
 
-            errorLabel.setText("New Rules Added!");
+                errorLabel.setText("New Rules Added!");
 
-            stateTextField.clear();
-            write1TextField.clear();
-            move1TextField.clear();
-            nextState1TextField.clear();
-            write0TextField.clear();
-            move0TextField.clear();
-            nextState0TextField.clear();
+                stateTextField.clear();
+                writeVal.clear();
+                readVal.clear();
+                moveHere.clear();
+                nextState.clear();
+            }
+
+        } else {
+            errorLabel.setText("Unexpected value");
         }
     }
 
     @FXML
     public void setCurrentStateButtonClicked() {
-        if(!currentStateTextField.getText().isEmpty() && currentStateTextField.getText().matches("^[-+]?\\d+(\\.\\d+)?$")) {
+        if (!currentStateTextField.getText().isEmpty() && currentStateTextField.getText().matches("^[-+]?\\d+(\\.\\d+)?$")) {
             currentStateIndex = Integer.parseInt(currentStateTextField.getText());
             errorLabel.setText("Initial State is set!");
-        }
-        else {
+        } else {
             errorLabel.setText("Initial State must be an Integer!");
         }
     }
 
     @FXML
     public void setHeadPositionButtonClicked() {
-        if(!headPositionTextField.getText().isEmpty() && headPositionTextField.getText().matches("^[-+]?\\d+(\\.\\d+)?$")) {
+        if (!headPositionTextField.getText().isEmpty() && headPositionTextField.getText().matches("^[-+]?\\d+(\\.\\d+)?$")) {
             currentAbsIndex = Integer.parseInt(headPositionTextField.getText());
-            while(currentAbsIndex != Integer.parseInt(t1C5TableColumn.getText())) {
-                if(currentAbsIndex > Integer.parseInt(t1C5TableColumn.getText())){
+            while (currentAbsIndex != Integer.parseInt(t1C5TableColumn.getText())) {
+                if (currentAbsIndex > Integer.parseInt(t1C5TableColumn.getText())) {
                     onMoveRightTapeButtonClicked();
-                    headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())-1));
-                }
-                else {
+                    headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) - 1));
+                } else {
                     onMoveLeftTapeButtonClicked();
-                    headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())+1));
+                    headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) + 1));
                 }
             }
             errorLabel.setText("Head position is set!");
-        }
-        else {
+        } else {
             errorLabel.setText("Head Position must be an Integer!");
         }
     }
 
     @FXML
     public void deleteRuleButtonClicked() {
-        if(lastChosenRow != null) {
+        if (lastChosenRow != null) {
             rulesObservableList.remove((Rule) lastChosenRow);
             rulesTable2View.setItems(rulesObservableList);
-        }
-        else{
+        } else {
             errorLabel.setText("You must select the Rule from the table!");
         }
     }
@@ -277,14 +316,13 @@ public class MainWindowController {
         //update UI
         headPositionTextField.setText(String.valueOf(currentAbsIndex));
 
-        while(currentAbsIndex != Integer.parseInt(t1C5TableColumn.getText())) {
-            if(currentAbsIndex > Integer.parseInt(t1C5TableColumn.getText())){
+        while (currentAbsIndex != Integer.parseInt(t1C5TableColumn.getText())) {
+            if (currentAbsIndex > Integer.parseInt(t1C5TableColumn.getText())) {
                 onMoveRightTapeButtonClicked();
-                headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())-1));
-            }
-            else {
+                headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) - 1));
+            } else {
                 onMoveLeftTapeButtonClicked();
-                headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText())+1));
+                headPositionTextField.setText(String.valueOf(Integer.parseInt(headPositionTextField.getText()) + 1));
             }
         }
 
@@ -293,17 +331,8 @@ public class MainWindowController {
     }
 
     @FXML
-    public void runButtonClicked(){
-        /*
-        try {
-            for(;;) {
-                executeStepButtonClicked();
-                TimeUnit.SECONDS.sleep(1);
-            }
-        }
-        catch (InterruptedException e){
-            errorLabel.setText(e.getMessage());
-        }
-        */
+    public void runButtonClicked() {
+        final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+        ses.scheduleWithFixedDelay(this::executeStepButtonClicked, 0, 1, TimeUnit.SECONDS);
     }
 }
