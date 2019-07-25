@@ -16,17 +16,17 @@ public class MemoryBuffer {
     public String C10;
 
     public MemoryBuffer() {
-        this.C0 = "";
-        this.C1 = "";
-        this.C2 = "";
-        this.C3 = "";
-        this.C4 = "";
-        this.C5 = "";
-        this.C6 = "";
-        this.C7 = "";
-        this.C8 = "";
-        this.C9 = "";
-        this.C10 = "";
+        this.C0 = "_";
+        this.C1 = "_";
+        this.C2 = "_";
+        this.C3 = "_";
+        this.C4 = "_";
+        this.C5 = "_";
+        this.C6 = "_";
+        this.C7 = "_";
+        this.C8 = "_";
+        this.C9 = "_";
+        this.C10 = "_";
     }
 
     public MemoryBuffer(List<String> input) {

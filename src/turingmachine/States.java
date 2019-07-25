@@ -39,9 +39,10 @@ public class States {
     }
 
     public int executeState(int stateIndex, int currentInputIndex) {
+        int absoluteIndex = currentInputIndex;
         for (Rule rule: this.rules) {
             if(rule.getStateIndex() == stateIndex && rule.getInputValue() == Integer.parseInt(memoryTape.get(currentInputIndex))){
-                int absoluteIndex = currentInputIndex;
+                //int absoluteIndex = currentInputIndex;
                 switch (rule.getActionLRN()) {
                     case "L":
                         if(rule.getActionRW().equals("")) {
@@ -80,7 +81,7 @@ public class States {
                 }
             }
         }
-        return currentInputIndex;
+        return (absoluteIndex+1);
     }
 
     public void setCurrState(int nextState) {

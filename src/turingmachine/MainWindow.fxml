@@ -55,6 +55,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
                <children>
+                  <TextField fx:id="abc" prefHeight="25.0" prefWidth="255.0" />
                   <Button fx:id="moveLeftTapeButton" mnemonicParsing="false" onMouseClicked="#onMoveLeftTapeButtonClicked" text="&lt;" />
                   <Label text="Move tape">
                      <font>
@@ -66,9 +67,10 @@
                   </Label>
                   <Button fx:id="moveRightTapeButton" mnemonicParsing="false" onMouseClicked="#onMoveRightTapeButtonClicked" text="&gt;" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <Button fx:id="set1Button" mnemonicParsing="false" onMouseClicked="#set1ButtonClicked" text="Set 1" />
                   <Separator layoutX="330.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
-                  <Button fx:id="set0Button" layoutX="355.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#set0ButtonClicked" text="Set 0" />
+                  <Button fx:id="setVoidButton" layoutX="355.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#setVoidButtonClicked" text="Set void" />
+                  <Button fx:id="setValueButton" mnemonicParsing="false" onMouseClicked="#setValueButtonClicked" text="Set" />
+                  <TextField fx:id="valueSet" prefHeight="25.0" prefWidth="55.0" />
                </children>
                <opaqueInsets>
                   <Insets bottom="10.0" />
@@ -137,44 +139,32 @@
                               </HBox>
                               <HBox layoutX="10.0" layoutY="36.0" prefHeight="52.0" prefWidth="264.0">
                                  <children>
-                                    <Label prefHeight="17.0" prefWidth="98.0" text="Read &quot;1&quot;:  Write" underline="true" />
-                                    <TextField fx:id="write1TextField" prefHeight="25.0" prefWidth="22.0">
-                                       <HBox.margin>
-                                          <Insets right="2.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Label text="Move" />
-                                    <TextField fx:id="move1TextField" prefHeight="25.0" prefWidth="25.0">
-                                       <HBox.margin>
-                                          <Insets left="2.0" right="2.0" />
-                                       </HBox.margin>
-                                    </TextField>
+                                    <Label prefHeight="17.0" prefWidth="80.0" text="Read val" underline="true" />
+                                    <Label prefHeight="17.0" prefWidth="64.0" text="Write" />
+                                    <Label prefHeight="17.0" prefWidth="59.0" text="Move" />
                                     <Label text="Next State" />
-                                    <TextField fx:id="nextState1TextField" prefHeight="25.0" prefWidth="22.0">
-                                       <HBox.margin>
-                                          <Insets left="2.0" right="2.0" />
-                                       </HBox.margin>
-                                    </TextField>
                                  </children>
                               </HBox>
                               <HBox layoutX="10.0" layoutY="68.0" prefHeight="146.0" prefWidth="264.0">
                                  <children>
-                                    <Label prefHeight="17.0" prefWidth="98.0" text="Read &quot;0&quot;:  Write" underline="true" />
-                                    <TextField fx:id="write0TextField" prefHeight="25.0" prefWidth="22.0">
+                                    <TextField fx:id="readVal" prefHeight="25.0" prefWidth="25.0">
                                        <HBox.margin>
-                                          <Insets right="2.0" />
+                                          <Insets left="10.0" right="49.0" />
                                        </HBox.margin>
                                     </TextField>
-                                    <Label text="Move" />
-                                    <TextField fx:id="move0TextField" prefHeight="25.0" prefWidth="25.0">
+                                    <TextField fx:id="writeVal" layoutX="12.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0">
                                        <HBox.margin>
-                                          <Insets left="2.0" right="2.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </TextField>
-                                    <Label text="Next State" />
-                                    <TextField fx:id="nextState0TextField" prefHeight="25.0" prefWidth="22.0">
+                                    <TextField fx:id="moveHere" layoutX="39.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0">
                                        <HBox.margin>
-                                          <Insets left="2.0" right="2.0" />
+                                          <Insets left="36.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <TextField fx:id="nextState" layoutX="64.0" layoutY="10.0" prefHeight="25.0" prefWidth="52.0">
+                                       <HBox.margin>
+                                          <Insets left="42.0" />
                                        </HBox.margin>
                                     </TextField>
                                  </children>
